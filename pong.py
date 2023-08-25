@@ -76,16 +76,36 @@ while run:
         ball_y = HEIGHT/2 - radius
         ballVelocityX = 2
         ballVelocityY = 2
+
+    #Paddle Movement Restrictions
+    if leftPaddleY >= HEIGHT - paddleHeight:
+        leftPaddleY = HEIGHT - paddleHeight
+    if leftPaddleY <= 0:
+        leftPaddleY = 0
+    if rightPaddleY >= HEIGHT - paddleHeight:
+        rightPaddleY = HEIGHT - paddleHeight
+    if rightPaddleY <= 0:
+        rightPaddleY = 0
+    
+    #Left Paddle Collision
+    if leftPaddleX <= ball_x <= leftPaddleX + paddleWidth:
+        if leftPaddleY <= ball_y <= leftPaddleY + paddleHeight:
+            ball_x = leftPaddleX + paddleWidth
+            ballVelocityX *= -1
+
+    #Right Paddle Collision
+    if rightPaddleX <= ball_x <= rightPaddleX + paddleWidth:
+        if rightPaddleY <= ball_y <= rightPaddleY + paddleHeight:
+            ball_x = rightPaddleX 
+            ballVelocityX *= -1
+
     #Movement Section
     ball_x += ballVelocityX
     ball_y += ballVelocityY
     rightPaddleY += rightPaddleVelocity
     leftPaddleY += leftPaddleVelocity
 
-    #Paddle Movement Restrictions
-    if leftPaddleY >= HEIGHT - paddleHeight:
-        leftPaddleY >= HEIGHT - paddleHeight
-        
+
     #Draw pygame objects with pygame.draw...
     #Draw Ball
     pygame.draw.circle(window, WHITE, (ball_x, ball_y), radius)
