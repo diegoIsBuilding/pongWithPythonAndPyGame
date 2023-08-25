@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 
@@ -8,9 +9,12 @@ WIDTH, HEIGHT = 1000, 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 #Change the pygame window name
 pygame.display.set_caption("Pongg")
-
 run = True 
 
+#Ball Direction
+direction = [0,1]
+#Ball Angles 
+angles = [0,1,2]
 #Ball Color
 WHITE = (255,255,255)
 #Ball ReDraw
@@ -69,13 +73,59 @@ while run:
     if ball_x >= WIDTH - radius:
         ball_x = WIDTH/2 - radius
         ball_y = HEIGHT/2 - radius
+        randomDirection = random.choice(direction)
+        randomAngles = random.choice(angles)
+        #Up Direction
+        if randomDirection == 0:
+            if randomAngles == 0:
+                ballVelocityX = 2
+                ballVelocityY = -2.5
+            if randomAngles == 1:
+                ballVelocityX = 2
+                ballVelocityY = -2
+            if randomAngles == 2:
+                ballVelocityX = 2.5
+                ballVelocityY = -2
+        #Down Direction
+        if randomDirection == 1:
+            if randomAngles == 0:
+                ballVelocityX = 2
+                ballVelocityY = 2.5
+            if randomAngles == 1:
+                ballVelocityX = 2
+                ballVelocityY = 2
+            if randomAngles == 2:
+                ballVelocityX = 2.5
+                ballVelocityY = 2
         ballVelocityX *= -1
-        ballVelocityY *= -1
+
     if ball_x <= 0 + radius:
         ball_x = WIDTH/2 - radius
         ball_y = HEIGHT/2 - radius
-        ballVelocityX = 2
-        ballVelocityY = 2
+        randomDirection = random.choice(direction)
+        randomAngles = random.choice(angles)
+        #Up Direction
+        if randomDirection == 0:
+            if randomAngles == 0:
+                ballVelocityX = 2
+                ballVelocityY = -2.5
+            if randomAngles == 1:
+                ballVelocityX = 2
+                ballVelocityY = -2
+            if randomAngles == 2:
+                ballVelocityX = 2.5
+                ballVelocityY = -2
+        #Down Direction
+        if randomDirection == 1:
+            if randomAngles == 0:
+                ballVelocityX = 2
+                ballVelocityY = 2.5
+            if randomAngles == 1:
+                ballVelocityX = 2
+                ballVelocityY = 2
+            if randomAngles == 2:
+                ballVelocityX = 2.5
+                ballVelocityY = 2
 
     #Paddle Movement Restrictions
     if leftPaddleY >= HEIGHT - paddleHeight:
