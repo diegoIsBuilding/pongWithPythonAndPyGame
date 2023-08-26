@@ -19,6 +19,8 @@ angles = [0,1,2]
 WHITE = (255,255,255)
 #Ball ReDraw
 BLACK = (0,0,0)
+#Smash Element Indicator
+RED = (255,0,0)
 #Ball Position on window
 radius = 15
 ball_x = WIDTH/2 - radius
@@ -40,6 +42,12 @@ rightPaddleY = HEIGHT/2 - paddleHeight/2
 rightPaddleVelocity = 0
 leftPaddleVelocity = 0
 
+#Smash Element 
+leftSmashElement = 0
+rightSmashElement = 0
+leftSmashElementRemaining = 3
+rightSmashElementRemaining = 3
+
 while run: 
     #Make the ball look like it is moving by removing the previous position and redrawing the new position
     window.fill(BLACK)
@@ -50,15 +58,23 @@ while run:
         if i.type == pygame.QUIT:
             run = False
     #Check keystrokes
+    #Right paddles
         elif i.type == pygame.KEYDOWN:
             if i.key == pygame.K_UP:
                 rightPaddleVelocity = -4
             if i.key == pygame.K_DOWN:
                 rightPaddleVelocity = 4
+            #Smash Element Activation
+            if i.key == pygame.K_RIGHT and rightSmashElementRemaining > 0:
+                rightSmashElement = 1
+    #Left Paddle
             if i.key == pygame.K_w:
                 leftPaddleVelocity = -4
             if i.key == pygame.K_s:
                 leftPaddleVelocity = 4
+            #Smash Element Activiation
+            if i.key == pygame.K_d and leftSmashElementRemaining > 0:
+                leftSmashElement = 1
         
         if i.type == pygame.KEYUP:
             rightPaddleVelocity = 0
@@ -148,6 +164,23 @@ while run:
         if rightPaddleY <= ball_y <= rightPaddleY + paddleHeight:
             ball_x = rightPaddleX 
             ballVelocityX *= -1
+    
+    #Smash Element Active
+    if leftSmashElement == 1:
+        if leftPaddleX <= ball_x <= leftPaddleX + paddleWidth:
+            if leftPaddleY <= ball_y <= leftPaddleY + paddleHeight:
+                ball_x = leftPaddleX + paddleWidth
+                ballVelocityX *= -3.5
+                leftSmashElement = 0
+                leftSmashElementRemaining -= 1
+    
+    if rightSmashElement == 1:
+        if rightPaddleX <= ball_x <= rightPaddleX + paddleWidth:
+            if rightPaddleY <= ball_y <= rightPaddleY + paddleHeight:
+                ball_x = rightPaddleX 
+                ballVelocityX *= 3.5
+                rightSmashElement = 0
+                leftSmashElementRemaining -= 1
 
     #Movement Section
     ball_x += ballVelocityX
@@ -162,5 +195,11 @@ while run:
     #Draw Paddles
     pygame.draw.rect(window, WHITE, pygame.Rect(leftPaddleX, leftPaddleY, paddleWidth, paddleHeight))
     pygame.draw.rect(window, WHITE, pygame.Rect(rightPaddleX, rightPaddleY, paddleWidth, paddleHeight))
+
+    #Smash Element Indicator 
+    if leftSmashElement == 1:
+        pygame.draw.circle(window, RED, (leftPaddleX + 10, leftPaddleY + 10), 4)
+    if rightSmashElement == 1:
+        pygame.draw.circle(window, RED, (rightPaddleX + 10, rightPaddleY + 10), 4)    
     #To see ojects in the window we must update the display
     pygame.display.update()
