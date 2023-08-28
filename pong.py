@@ -48,6 +48,12 @@ rightSmashElement = 0
 leftSmashElementRemaining = 3
 rightSmashElementRemaining = 3
 
+#Flash Element
+leftFlashElement = 0
+rightFlashElement = 0
+leftFlashElementRemaining = 3
+rightFlashElementRemaining = 3
+
 while run: 
     #Make the ball look like it is moving by removing the previous position and redrawing the new position
     window.fill(BLACK)
@@ -67,6 +73,9 @@ while run:
             #Smash Element Activation
             if i.key == pygame.K_RIGHT and rightSmashElementRemaining > 0:
                 rightSmashElement = 1
+            #Flash Element Activation
+            if i.key == pygame.K_LEFT and rightFlashElementRemaining > 0:
+                rightFlashElement = 1
     #Left Paddle
             if i.key == pygame.K_w:
                 leftPaddleVelocity = -4
@@ -75,6 +84,9 @@ while run:
             #Smash Element Activiation
             if i.key == pygame.K_d and leftSmashElementRemaining > 0:
                 leftSmashElement = 1
+            #Flash Element Activation
+            if i.key == pygame.K_a and leftFlashElementRemaining > 0:
+                leftFlashElement = 1 
         
         if i.type == pygame.KEYUP:
             rightPaddleVelocity = 0
@@ -173,7 +185,13 @@ while run:
                 ballVelocityX *= -3.5
                 leftSmashElement = 0
                 leftSmashElementRemaining -= 1
-    
+    #Flash Element Active
+    if leftFlashElementRemaining == 1:
+        leftPaddleY = ball_y
+        leftFlashElement = 0
+        leftFlashElementRemaining -= 1
+
+    #Smash Element Active
     if rightSmashElement == 1:
         if rightPaddleX <= ball_x <= rightPaddleX + paddleWidth:
             if rightPaddleY <= ball_y <= rightPaddleY + paddleHeight:
@@ -181,7 +199,11 @@ while run:
                 ballVelocityX *= 3.5
                 rightSmashElement = 0
                 leftSmashElementRemaining -= 1
-
+    #Flash Element Active
+    if rightFlashElementRemaining == 1:
+        rightPaddleY = ball_y
+        rightFlashElement = 0
+        rightFlashElementRemaining -= 1
     #Movement Section
     ball_x += ballVelocityX
     ball_y += ballVelocityY
