@@ -26,8 +26,8 @@ radius = 15
 ball_x = WIDTH/2 - radius
 ball_y = HEIGHT/2 - radius
 #Ball Movement
-ballVelocityX = 3
-ballVelocityY = 3
+ballVelocityX = 1
+ballVelocityY = 1
 
 #Paddle Positions and Dimensions 
 paddleWidth = 20
@@ -42,17 +42,12 @@ rightPaddleY = HEIGHT/2 - paddleHeight/2
 rightPaddleVelocity = 0
 leftPaddleVelocity = 0
 
-#Smash Element 
+#Smash and Flash Element 
 leftSmashElement = 0
 rightSmashElement = 0
 leftSmashElementRemaining = 3
 rightSmashElementRemaining = 3
 
-#Flash Element
-leftFlashElement = 0
-rightFlashElement = 0
-leftFlashElementRemaining = 3
-rightFlashElementRemaining = 3
 
 while run: 
     #Make the ball look like it is moving by removing the previous position and redrawing the new position
@@ -74,8 +69,8 @@ while run:
             if i.key == pygame.K_RIGHT and rightSmashElementRemaining > 0:
                 rightSmashElement = 1
             #Flash Element Activation
-            if i.key == pygame.K_LEFT and rightFlashElementRemaining > 0:
-                rightFlashElement = 1
+            if i.key == pygame.K_LEFT and rightSmashElementRemaining > 0:
+                rightSmashElement == 2
     #Left Paddle
             if i.key == pygame.K_w:
                 leftPaddleVelocity = -4
@@ -85,8 +80,8 @@ while run:
             if i.key == pygame.K_d and leftSmashElementRemaining > 0:
                 leftSmashElement = 1
             #Flash Element Activation
-            if i.key == pygame.K_a and leftFlashElementRemaining > 0:
-                leftFlashElement = 1 
+            if i.key == pygame.K_a and leftSmashElementRemaining > 0:
+                leftSmashElement == 2
         
         if i.type == pygame.KEYUP:
             rightPaddleVelocity = 0
@@ -106,25 +101,25 @@ while run:
         #Up Direction
         if randomDirection == 0:
             if randomAngles == 0:
-                ballVelocityX = 2
-                ballVelocityY = -2.5
+                ballVelocityX = 1
+                ballVelocityY = -1.5
             if randomAngles == 1:
-                ballVelocityX = 2
-                ballVelocityY = -2
+                ballVelocityX = 1
+                ballVelocityY = -1
             if randomAngles == 2:
-                ballVelocityX = 2.5
-                ballVelocityY = -2
+                ballVelocityX = 1.5
+                ballVelocityY = -1
         #Down Direction
         if randomDirection == 1:
             if randomAngles == 0:
-                ballVelocityX = 2
-                ballVelocityY = 2.5
+                ballVelocityX = 1
+                ballVelocityY = 1.5
             if randomAngles == 1:
-                ballVelocityX = 2
-                ballVelocityY = 2
+                ballVelocityX = 1
+                ballVelocityY = 1
             if randomAngles == 2:
-                ballVelocityX = 2.5
-                ballVelocityY = 2
+                ballVelocityX = 1.5
+                ballVelocityY = 1
         ballVelocityX *= -1
 
     if ball_x <= 0 + radius:
@@ -135,25 +130,25 @@ while run:
         #Up Direction
         if randomDirection == 0:
             if randomAngles == 0:
-                ballVelocityX = 2
-                ballVelocityY = -2.5
+                ballVelocityX = 1
+                ballVelocityY = -1.5
             if randomAngles == 1:
-                ballVelocityX = 2
-                ballVelocityY = -2
+                ballVelocityX = 1
+                ballVelocityY = -1
             if randomAngles == 2:
-                ballVelocityX = 2.5
-                ballVelocityY = -2
+                ballVelocityX = 1.5
+                ballVelocityY = -1
         #Down Direction
         if randomDirection == 1:
             if randomAngles == 0:
-                ballVelocityX = 2
-                ballVelocityY = 2.5
+                ballVelocityX = 1
+                ballVelocityY = 1.5
             if randomAngles == 1:
-                ballVelocityX = 2
-                ballVelocityY = 2
+                ballVelocityX = 1
+                ballVelocityY = 1
             if randomAngles == 2:
-                ballVelocityX = 2.5
-                ballVelocityY = 2
+                ballVelocityX = 1.5
+                ballVelocityY = 1
 
     #Paddle Movement Restrictions
     if leftPaddleY >= HEIGHT - paddleHeight:
@@ -186,10 +181,10 @@ while run:
                 leftSmashElement = 0
                 leftSmashElementRemaining -= 1
     #Flash Element Active
-    if leftFlashElementRemaining == 1:
+    elif leftSmashElementRemaining == 2:
         leftPaddleY = ball_y
-        leftFlashElement = 0
-        leftFlashElementRemaining -= 1
+        leftSmashElement = 0
+        leftSmashElementRemaining -= 1
 
     #Smash Element Active
     if rightSmashElement == 1:
@@ -200,10 +195,10 @@ while run:
                 rightSmashElement = 0
                 leftSmashElementRemaining -= 1
     #Flash Element Active
-    if rightFlashElementRemaining == 1:
-        rightPaddleY = ball_y
-        rightFlashElement = 0
-        rightFlashElementRemaining -= 1
+    elif rightSmashElementRemaining == 2:
+        leftPaddleY = ball_y
+        rightSmashElement = 0
+        rightSmashElementRemaining -= 1
     #Movement Section
     ball_x += ballVelocityX
     ball_y += ballVelocityY
