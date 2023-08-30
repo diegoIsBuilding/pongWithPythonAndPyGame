@@ -42,11 +42,17 @@ rightPaddleY = HEIGHT/2 - paddleHeight/2
 rightPaddleVelocity = 0
 leftPaddleVelocity = 0
 
-#Smash and Flash Element 
+#Smash Element Variables
 leftSmashElement = 0
 rightSmashElement = 0
 leftSmashElementRemaining = 3
 rightSmashElementRemaining = 3
+
+#Flash Element Variables
+leftFlashElement = 0
+rightFlashElement = 0
+leftFlashElementRemaining = 3
+rightFlashElementRemaining = 3
 
 
 while run: 
@@ -68,9 +74,11 @@ while run:
             #Smash Element Activation
             if i.key == pygame.K_RIGHT and rightSmashElementRemaining > 0:
                 rightSmashElement = 1
-            #Flash Element Activation
-            if i.key == pygame.K_LEFT and rightSmashElementRemaining > 0:
-                rightSmashElement == 2
+            #Flash Element Activation Right Paddle
+            # 
+            if i.key == pygame.K_RIGHT and rightFlashElementRemaining > 0:
+                rightFlashElement = 1
+            #
     #Left Paddle
             if i.key == pygame.K_w:
                 leftPaddleVelocity = -4
@@ -79,9 +87,11 @@ while run:
             #Smash Element Activiation
             if i.key == pygame.K_d and leftSmashElementRemaining > 0:
                 leftSmashElement = 1
-            #Flash Element Activation
-            if i.key == pygame.K_a and leftSmashElementRemaining > 0:
-                leftSmashElement == 2
+            #Flash Element Activation Left Paddle
+            #
+            if i.key == pygame.K_a and leftFlashElementRemaining > 0:
+                leftFlashElement = 1
+            #
         
         if i.type == pygame.KEYUP:
             rightPaddleVelocity = 0
@@ -102,26 +112,27 @@ while run:
         if randomDirection == 0:
             if randomAngles == 0:
                 ballVelocityX = 1
-                ballVelocityY = -1.5
+                ballVelocityY = -1
             if randomAngles == 1:
                 ballVelocityX = 1
                 ballVelocityY = -1
             if randomAngles == 2:
-                ballVelocityX = 1.5
+                ballVelocityX = 1
                 ballVelocityY = -1
         #Down Direction
         if randomDirection == 1:
             if randomAngles == 0:
                 ballVelocityX = 1
-                ballVelocityY = 1.5
+                ballVelocityY = 1
             if randomAngles == 1:
                 ballVelocityX = 1
                 ballVelocityY = 1
             if randomAngles == 2:
-                ballVelocityX = 1.5
+                ballVelocityX = 1
                 ballVelocityY = 1
         ballVelocityX *= -1
-
+############################################################
+############################################################
     if ball_x <= 0 + radius:
         ball_x = WIDTH/2 - radius
         ball_y = HEIGHT/2 - radius
@@ -150,7 +161,7 @@ while run:
                 ballVelocityX = 1.5
                 ballVelocityY = 1
 
-    #Paddle Movement Restrictions
+    #Paddle Movement Controls
     if leftPaddleY >= HEIGHT - paddleHeight:
         leftPaddleY = HEIGHT - paddleHeight
     if leftPaddleY <= 0:
@@ -172,7 +183,7 @@ while run:
             ball_x = rightPaddleX 
             ballVelocityX *= -1
     
-    #Smash Element Active
+    #Smash Element Active For Left Paddle
     if leftSmashElement == 1:
         if leftPaddleX <= ball_x <= leftPaddleX + paddleWidth:
             if leftPaddleY <= ball_y <= leftPaddleY + paddleHeight:
@@ -180,13 +191,15 @@ while run:
                 ballVelocityX *= -3.5
                 leftSmashElement = 0
                 leftSmashElementRemaining -= 1
-    #Flash Element Active
-    elif leftSmashElementRemaining == 2:
-        leftPaddleY = ball_y
-        leftSmashElement = 0
-        leftSmashElementRemaining -= 1
+    #Flash Element Active For Left Paddle
+    if leftFlashElement == 1:
+        leftPaddleY = ball_y - paddleHeight // 2
+        leftFlashElement = 0
+        leftFlashElementRemaining -= 1
+    #
+    #
 
-    #Smash Element Active
+    #Smash Element Active For Right Paddle 
     if rightSmashElement == 1:
         if rightPaddleX <= ball_x <= rightPaddleX + paddleWidth:
             if rightPaddleY <= ball_y <= rightPaddleY + paddleHeight:
@@ -194,11 +207,15 @@ while run:
                 ballVelocityX *= 3.5
                 rightSmashElement = 0
                 leftSmashElementRemaining -= 1
-    #Flash Element Active
-    elif rightSmashElementRemaining == 2:
-        leftPaddleY = ball_y
-        rightSmashElement = 0
-        rightSmashElementRemaining -= 1
+    #Flash Element Active For Right Paddle
+    if rightFlashElement == 1:
+        leftPaddleY = ball_y - paddleHeight // 2
+        rightFlashElement = 0
+        rightFlashElementRemaining -= 1
+    #
+    #
+    #
+
     #Movement Section
     ball_x += ballVelocityX
     ball_y += ballVelocityY
@@ -213,7 +230,7 @@ while run:
     pygame.draw.rect(window, WHITE, pygame.Rect(leftPaddleX, leftPaddleY, paddleWidth, paddleHeight))
     pygame.draw.rect(window, WHITE, pygame.Rect(rightPaddleX, rightPaddleY, paddleWidth, paddleHeight))
 
-    #Smash Element Indicator 
+    #Smash Element Indicator (little red circle on each paddle)
     if leftSmashElement == 1:
         pygame.draw.circle(window, RED, (leftPaddleX + 10, leftPaddleY + 10), 4)
     if rightSmashElement == 1:
