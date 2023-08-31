@@ -356,5 +356,13 @@ while run:
     #To see ojects in the window we must update the display
 
     #END GAME!!!!!
-
+    winningFont = pygame.font.SysFont('callibri', 100)
+    if playerOne >= 3:
+        window.fill(BLACK)
+        endscreen = winningFont.render("Player One: WINNER", True, WHITE)
+        window.blit(endscreen, (200, 250))
+    if playerTwo >= 3:
+        window.fill(BLACK)
+        endscreen = winningFont.render("Player Two: WINNER", True, WHITE)
+        window.blit(endscreen, (200, 250))
     pygame.display.update()
