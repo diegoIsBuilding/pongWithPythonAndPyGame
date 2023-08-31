@@ -18,6 +18,10 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pongg")
 run = True 
 
+#Player Score Variable
+playerOne = 0
+playerTwo = 0
+
 #Ball Direction
 direction = [0,1]
 #Ball Angles 
@@ -123,6 +127,9 @@ while run:
         cloneBallVelocityY *= -1
     #Player turns
     if ball_x >= WIDTH - radius:
+        #If the ball goes off the screen from the right
+        #hand side the player on the left gets the point
+        playerOne += 1
         ball_x = WIDTH/2 - radius
         ball_y = HEIGHT/2 - radius
         #Retrieve the position for the cloned ball
@@ -175,6 +182,9 @@ while run:
         cloneBallVelocityX *= -1
 
     if ball_x <= 0 + radius:
+        #Ball goes off the screen on the left hand side the player on the 
+        #right hand side gets the points
+        playerTwo += 1
         ball_x = WIDTH/2 - radius
         ball_y = HEIGHT/2 - radius
         #Clone Ball
@@ -315,6 +325,20 @@ while run:
         rightPaddleY += rightPaddleVelocity
         leftPaddleY += leftPaddleVelocity
 
+    #Scoreboard
+    font = pygame.font.SysFont('callibri', 32)
+    scoreOne = font.render("Player One: " + str(playerOne), True, WHITE)
+    window.blit(scoreOne, (25,25))
+    scoreTwo = font.render("Player One: " + str(playerOne), True, WHITE)
+    window.blit(scoreTwo, (825,25))
+    playerSmashOne = font.render("Smash Power: " + str(leftSmashElementRemaining), True, WHITE)
+    window.blit(playerSmashOne, (25, 65))
+    playerSmashTwo = font.render("Smash Power: " + str(rightSmashElementRemaining), True, WHITE)
+    window.blit(playerSmashOne, (825, 65))
+    playerFlashOne = font.render("Flash Power: " + str(leftFlashElementRemaining), True, WHITE)
+    window.blit(playerFlashOne, (25, 105))
+    playerFlashTwo = font.render("Flash Power: " + str(rightFlashElementRemaining), True, WHITE)
+    window.blit(playerFlashTwo, (825, 105))
 
     #Draw pygame objects with pygame.draw...
     #Draw Ball
@@ -330,4 +354,7 @@ while run:
     if rightSmashElement == 1:
         pygame.draw.circle(window, RED, (rightPaddleX + 10, rightPaddleY + 10), 4)    
     #To see ojects in the window we must update the display
+
+    #END GAME!!!!!
+
     pygame.display.update()
